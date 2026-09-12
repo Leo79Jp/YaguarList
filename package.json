@@ -1,0 +1,13 @@
+{
+  "name": "yaguar",
+  "version": "1.0.0",
+  "description": "Aplicación web de lista de compras mobile-first",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.22.2"
+  }
+}

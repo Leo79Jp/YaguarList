@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/images/yaguarCarrito.png">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Yaguar</h1>
+      <div class="header-actions">
+        <button id="import-btn" class="btn-subtle" title="Importar lista">📋</button>
+        <button id="new-purchase-btn" class="btn-subtle" title="Nueva compra">🔄</button>
+        <button id="mode-toggle-btn" class="btn-primary">Modo Compra</button>
+      </div>
+    </header>
+
+<!-- MODO EDICIÓN -->
+    <div id="edit-mode-section">
+      <section class="add-section">
+        <form id="add-form" class="add-form">
+          <input 
+            type="text" 
+            id="product-input" 
+            placeholder="Agregar producto..." 
+            autocomplete="off"
+            required
+          >
+          <button type="submit">+</button>
+        </form>
+      </section>
+
+      <!-- BARRA DE BÚSQUEDA -->
+      <section class="search-section">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="Buscar producto..." 
+          autocomplete="off"
+        >
+      </section>
+
+      <section class="content">
+        <ul id="pending-list" class="product-list"></ul>
+
+        <div id="completed-section" class="completed-section" style="display: none;">
+          <h3>Comprados</h3>
+          <ul id="completed-list" class="product-list"></ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- MODO COMPRA -->
+    <div id="shopping-mode-section" style="display: none;">
+      <div class="shopping-header">
+        <div class="progress-info">
+          <span id="progress-text">0 de 0 productos</span>
+          <button id="undo-btn" class="btn-undo" style="display: none;">Deshacer</button>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <section class="content">
+        <ul id="shopping-pending-list" class="product-list"></ul>
+        <div class="shopping-completed-divider">Comprados</div>
+        <ul id="shopping-completed-list" class="product-list"></ul>
+      </section>
+    </div>
+  </div>
+
+  <!-- MODAL DE IMPORTACIÓN -->
+  <div id="import-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <h3>Importar desde texto</h3>
+      <p>Pega tu lista aquí (cada línea será un producto):</p>
+      <textarea id="import-textarea" placeholder="Ej:&#10;Manzanas&#10;Carne&#10;Queso"></textarea>
+      <div class="modal-actions">
+        <button id="cancel-import-btn" class="btn-secondary">Cancelar</button>
+        <button id="confirm-import-btn" class="btn-primary">Importar</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="initial-data">
+    <%- JSON.stringify(typeof items !== 'undefined' ? items : []) %>
+  </script>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
