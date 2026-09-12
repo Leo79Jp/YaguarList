@@ -15,13 +15,12 @@ export function initSwipeGesture(element, onSwipeRight, onSwipeLeft) {
     currentX = e.clientX;
     const diffX = currentX - startX;
     
-    // Desplazamiento visual limitado para feedback táctil
     if (Math.abs(diffX) < 120) {
       element.style.transform = `translateX(${diffX}px)`;
       if (diffX > 0) {
-        element.style.backgroundColor = '#ccfbf1'; // Tono verdoso al deslizar derecha
+        element.style.backgroundColor = '#ccfbf1';
       } else if (diffX < 0) {
-        element.style.backgroundColor = '#fee2e2'; // Tono rojizo al deslizar izquierda
+        element.style.backgroundColor = '#fee2e2';
       }
     }
   });
