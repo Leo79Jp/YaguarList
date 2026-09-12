@@ -1,20 +1,21 @@
 const express = require('express');
 const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Configurar EJS como motor de vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
+// Servir archivos estáticos desde la carpeta public
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
-const indexRouter = require('./src/routes/index');
-app.use('/', indexRouter);
-
-app.listen(PORT, () => {
-  console.log(`Yaguar! corriendo en http://localhost:${PORT}`);
+// Ruta principal
+app.get('/', (req, res) => {
+  res.render('pages/index', { title: 'Yaguar!' });
 });
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
