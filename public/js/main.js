@@ -250,3 +250,85 @@ function createProductElement(item, isShopping, index = 0, totalLength = 0) {
           renderApp();
         }, 50);
       },
+      () => {
+        setTimeout(() => {
+          if (confirm(`¿Eliminar "${item.name}"?`)) {
+            currentItems = deleteItem(currentItems, item.id);
+            renderApp();
+          }
+        }, 50);
+      }
+    );
+  } else {
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'product-actions';
+
+    const upBtn = document.createElement('button');
+    upBtn.className = 'btn-action btn-move';
+    upBtn.textContent = '▲';
+    upBtn.title = 'Subir';
+    if (index === 0) upBtn.disabled = true;
+    upBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      moveItem(item.id, -1);
+    });
+
+    const downBtn = document.createElement('button');
+    downBtn.className = 'btn-action btn-move';
+    downBtn.textContent = '▼';
+    downBtn.title = 'Bajar';
+    if (index === totalLength - 1) downBtn.disabled = true;
+    downBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      moveItem(item.id, 1);
+    });
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-action btn-edit';
+    editBtn.textContent = '✎';
+    editBtn.title = 'Editar';
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const newName = prompt('Editar producto:', item.name);
+      if (newName !== null) {
+        currentItems = updateItem(currentItems, item.id, newName);
+        renderApp();
+      }
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn-action btn-delete';
+    deleteBtn.textContent = '✕';
+    deleteBtn.title = 'Eliminar';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentItems = deleteItem(currentItems, item.id);
+      renderApp();
+    });
+
+    actionsDiv.appendChild(upBtn);
+    actionsDiv.appendChild(downBtn);
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
+    li.appendChild(actionsDiv);
+  }
+
+  return li;
+}
+
+function initAddForm() {
+  const form = document.getElementById('add-form');
+  const input = document.getElementById('product-input');
+
+  if (!form || !input) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const productName = input.value;
+    if (!productName.trim()) return;
+    currentItems = addItem(currentItems, productName);
+    renderApp();
+    input.value = '';
+    input.focus();
+  });
+}
