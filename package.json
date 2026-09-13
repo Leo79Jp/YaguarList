@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Aplicación web de lista de compras mobile-first",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "node app.js"
   },
