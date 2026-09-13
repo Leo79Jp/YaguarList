@@ -18,15 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   currentItems = getStoredItems(serverItems);
-  
   initUI();
   renderApp();
 });
 
 function initUI() {
   initAddForm();
-  
-  // Lógica de búsqueda
+
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
@@ -39,7 +37,6 @@ function initUI() {
   if (modeToggleBtn) {
     modeToggleBtn.addEventListener('click', () => {
       isShoppingMode = !isShoppingMode;
-      // Si salimos o entramos de modo compra, limpiamos la búsqueda opcionalmente o la mantenemos
       renderApp();
     });
   }
@@ -127,13 +124,13 @@ function renderEditList(items) {
   const pendingContainer = document.getElementById('pending-list');
   const completedContainer = document.getElementById('completed-list');
   const completedSection = document.getElementById('completed-section');
-  
+
   if (!pendingContainer || !completedContainer) return;
-  
+
   pendingContainer.innerHTML = '';
   completedContainer.innerHTML = '';
 
-  const filteredItems = searchQuery 
+  const filteredItems = searchQuery
     ? items.filter(item => item.name.toLowerCase().includes(searchQuery))
     : items;
 
@@ -217,8 +214,6 @@ function moveItem(id, direction) {
   renderApp();
 }
 
-
-
 function createProductElement(item, isShopping, index = 0, totalLength = 0) {
   const li = document.createElement('li');
   li.className = `product-item ${item.completed ? 'completed' : ''}`;
@@ -245,99 +240,13 @@ function createProductElement(item, isShopping, index = 0, totalLength = 0) {
   li.appendChild(checkbox);
   li.appendChild(span);
 
- if (isShopping) {
-    // Activar gestos táctiles en Modo Compra con retraso de seguridad para evitar clics fantasma
+  if (isShopping) {
     initSwipeGesture(
-      li, 
+      li,
       () => {
         setTimeout(() => {
           lastToggledId = item.id;
           currentItems = toggleItemCompleted(currentItems, item.id);
           renderApp();
         }, 50);
-      }, 
-      () => {
-        setTimeout(() => {
-          if (confirm(`¿Eliminar "${item.name}"?`)) {
-            currentItems = deleteItem(currentItems, item.id);
-            renderApp();
-          }
-        }, 50);
-      }
-    );
-  } else {
-    const actionsDiv = document.createElement('div');
-    actionsDiv.className = 'product-actions';
-
-    const upBtn = document.createElement('button');
-    upBtn.className = 'btn-action btn-move';
-    upBtn.textContent = '▲';
-    upBtn.title = 'Subir';
-    if (index === 0) upBtn.disabled = true;
-    upBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      moveItem(item.id, -1);
-    });
-
-    const downBtn = document.createElement('button');
-    downBtn.className = 'btn-action btn-move';
-    downBtn.textContent = '▼';
-    downBtn.title = 'Bajar';
-    if (index === totalLength - 1) downBtn.disabled = true;
-    downBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      moveItem(item.id, 1);
-    });
-
-    const editBtn = document.createElement('button');
-    editBtn.className = 'btn-action btn-edit';
-    editBtn.textContent = '✎';
-    editBtn.title = 'Editar';
-    editBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const newName = prompt('Editar producto:', item.name);
-      if (newName !== null) {
-        currentItems = updateItem(currentItems, item.id, newName);
-        renderApp();
-      }
-    });
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'btn-action btn-delete';
-    deleteBtn.textContent = '✕';
-    deleteBtn.title = 'Eliminar';
-    deleteBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      currentItems = deleteItem(currentItems, item.id);
-      renderApp();
-    });
-
-    actionsDiv.appendChild(upBtn);
-    actionsDiv.appendChild(downBtn);
-    actionsDiv.appendChild(editBtn);
-    actionsDiv.appendChild(deleteBtn);
-    li.appendChild(actionsDiv);
-  }
-
-  return li;
-}
-
-function initAddForm() {
-  const form = document.getElementById('add-form');
-  const input = document.getElementById('product-input');
-
-  if (!form || !input) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const productName = input.value;
-    
-    if (!productName.trim()) return;
-
-    currentItems = addItem(currentItems, productName);
-    renderApp();
-    
-    input.value = '';
-    input.focus();
-  });
-}
+      },

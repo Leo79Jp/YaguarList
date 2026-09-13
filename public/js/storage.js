@@ -37,7 +37,7 @@ export function updateItem(items, id, newName) {
   const trimmed = newName.trim();
   if (!trimmed) return items;
 
-  const updatedItems = items.map(item => 
+  const updatedItems = items.map(item =>
     item.id === id ? { ...item, name: trimmed } : item
   );
   saveItems(updatedItems);
@@ -49,22 +49,26 @@ export function deleteItem(items, id) {
   saveItems(updatedItems);
   return updatedItems;
 }
+
 export function toggleItemCompleted(items, id) {
-  const updatedItems = items.map(item => 
+  const updatedItems = items.map(item =>
     item.id === id ? { ...item, completed: !item.completed } : item
   );
   saveItems(updatedItems);
   return updatedItems;
 }
+
 export function resetPurchase(items) {
   const updatedItems = items.map(item => ({ ...item, completed: false }));
   saveItems(updatedItems);
   return updatedItems;
 }
+
 export function updateItemsOrder(items, newOrderedItems) {
   saveItems(newOrderedItems);
   return newOrderedItems;
 }
+
 export function importItemsFromText(items, text) {
   if (!text || !text.trim()) return items;
 

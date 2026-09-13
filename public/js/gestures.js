@@ -14,7 +14,6 @@ export function initSwipeGesture(element, onSwipeRight, onSwipeLeft) {
     if (!isDragging) return;
     currentX = e.clientX;
     const diffX = currentX - startX;
-    
     if (Math.abs(diffX) < 120) {
       element.style.transform = `translateX(${diffX}px)`;
       if (diffX > 0) {
@@ -29,11 +28,9 @@ export function initSwipeGesture(element, onSwipeRight, onSwipeLeft) {
     if (!isDragging) return;
     isDragging = false;
     element.releasePointerCapture(e.pointerId);
-    
     const diffX = currentX - startX;
     element.style.transform = '';
     element.style.backgroundColor = '';
-
     const threshold = 60;
     if (diffX > threshold) {
       if (onSwipeRight) onSwipeRight();
